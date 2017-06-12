@@ -4,7 +4,7 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
     "mdb-radio-list": "git://github.com/makedatabetter-dev/mdb-radio-list.git",
-    "d3": "^4.9.1"
+    "d3": "v3.4.13"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

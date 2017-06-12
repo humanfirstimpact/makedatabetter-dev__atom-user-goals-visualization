@@ -1,4 +1,8 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../mdb-radio-list/mdb-radio-list.html">
+<link rel="import" href="../paper-radio-button/paper-radio-button.html">
+<link rel="import" href="./atom-user-goals-visualization-summary.html">
+<link rel="import" href="./atom-user-goals-visualization-dashboard.html">
 
 <!--
 `atom-user-goals-visualization`
@@ -12,9 +16,133 @@
     <style>
        :host {
         display: block;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        text-align: center;
+        --mdb-radio-list-button: {}
+      }
+
+       :host .node {
+        cursor: pointer;
+      }
+
+       :host .dashboard-strip {
+        width: calc(100%);
+        height: 135px;
+        display: flex;
+        background-color: rgba(0, 0, 0, 0.3);
+        position: absolute;
+        color: #ffffff;
+        padding: 30px;
+        font-family: 'Electrolize', sans-serif;
+        text-shadow: none;
+        top: 0;
+        left: 0;
+        right: 0;
+      }
+
+       :host .dashboard-strip--about,
+       :host .dashboard-strip--title,
+       :host .dashboard-strip--option {
+        width: calc(100% / 3);
+      }
+
+       :host .dashboard-strip span.heading {
+        font-family: 'Electrolize', sans-serif;
+        text-shadow: none;
+        display: block;
+        font-size: 50px;
+      }
+
+       :host .dashboard-strip span.sub-heading {
+        font-family: 'Electrolize', sans-serif;
+        text-shadow: none;
+        display: block;
+        font-size: 30px;
+      }
+
+       :host .dashboard-strip p {
+        color: #777777;
+        font-size: 12px;
+        padding: 0px 70px;
+      }
+
+       :host .dashboard-strip span.font-size-18 {
+        font-size: 18px;
+      }
+
+       :host #tree-container {
+        text-align: center;
+      }
+
+       :host .overlay {
+        background-image: url("default-bg.jpg");
+        background-size: cover;
+      }
+
+       :host .node circle {
+        fill: #434343;
+        stroke: transparent;
+        stroke-width: 1.5px;
+      }
+
+       :host .node text {
+        font-size: 12px;
+        font-family: 'Electrolize', sans-serif;
+        fill: #00fcda;
+      }
+
+       :host .link {
+        fill: none;
+        stroke: gold;
+        stroke-width: 0.5px;
+      }
+
+       :host .templink {
+        fill: none;
+        stroke: red;
+        stroke-width: 3px;
+      }
+
+      .ghostCircle.show {
+        display: block;
+      }
+
+       :host .ghostCircle,
+       :host .activeDrag .ghostCircle {
+        display: none;
       }
     </style>
-    <h2>Hello [[prop1]]</h2>
+    <div class="dashboard-strip">
+      <div class="dashboard-strip--about">
+        <span class="sub-heading">What's This?</span>
+        <p>
+          {{description}}
+        </p>
+      </div>
+      <div class="dashboard-strip--title">
+        <span class="heading">{{productName}}</span>
+        <span class="sub-heading">Who? What? How?</span>
+        <span class="sub-heading font-size-18">
+        A list of system users, their goals and tasks
+      </span>
+      </div>
+      <div class="dashboard-strip--option">
+        <mdb-radio-list selected="{{selectedVisualization}}">
+          <paper-radio-button name="summary">Summary</paper-radio-button>
+          <paper-radio-button name="dashboard">Dashboard</paper-radio-button>
+        </mdb-radio-list>
+      </div>
+    </div>
+    <div id="tree-container" align="center">
+      <template is="dom-if" if="{{_isDashboard(selectedVisualization)}}">
+        <atom-user-goals-visualization-dashboard></atom-user-goals-visualization-dashboard>
+      </template>
+      <template is="dom-if" if="{{!_isDashboard(selectedVisualization)}}">
+        <atom-user-goals-visualization-summary></atom-user-goals-visualization-summary>
+      </template>
+    </div>
   </template>
 
   <script>
@@ -32,8 +160,9 @@
           type: String
         },
 
-        selectedVizualization: {
-          type: String
+        selectedVisualization: {
+          type: String,
+          value: 'summary'
         },
 
         backgroundImage: {
@@ -61,6 +190,10 @@
           type: String
         }
       },
+
+      _isDashboard: function () {
+        return this.selectedVisualization === 'dashboard';
+      }
 
     });
   </script>
