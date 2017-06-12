@@ -1,0 +1,67 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`atom-user-goals-visualization`
+
+
+@demo demo/index.html 
+-->
+
+<dom-module id="atom-user-goals-visualization">
+  <template>
+    <style>
+       :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]</h2>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'atom-user-goals-visualization',
+
+      properties: {
+        productName: {
+          type: String,
+          value: '',
+        },
+
+        description: {
+          type: String
+        },
+
+        selectedVizualization: {
+          type: String
+        },
+
+        backgroundImage: {
+          type: String,
+          value: 'bg.jpg'
+        },
+
+        fontSizeL1: {
+          type: String
+        },
+
+        fontSizeL2: {
+          type: String
+        },
+
+        fontSizeL3: {
+          type: String
+        },
+
+        fontSizeL4: {
+          type: String
+        },
+
+        fontFamily: {
+          type: String
+        }
+      },
+
+    });
+  </script>
+</dom-module>
