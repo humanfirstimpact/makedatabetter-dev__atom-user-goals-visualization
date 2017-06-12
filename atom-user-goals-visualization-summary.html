@@ -1,15 +1,17 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="atom-user-goals-visualization-behavior.html">
+<link rel="import" href="atom-user-goals-visualization-styles.html">
 <script src="../d3/d3.min.js"></script>
 
 <dom-module id="atom-user-goals-visualization-summary">
     <template>
+        <style include="atom-user-goals-visualization-styles"></style>
         <style>
              :host {
                 display: block;
             }
         </style>
-        <h2>Summary</h2>
+        <div id="chart"></div>
     </template>
 
     <script>
@@ -18,18 +20,6 @@
             is: 'atom-user-goals-visualization-summary',
 
             behaviors: [atom.UserGoalsVisualizationBehavior],
-
-            properties: {
-                goals: {
-                    type: Object,
-                    value: {}
-                }
-            },
-
-            ready: function () {
-                this.initialize();
-                this.data = this.goals;
-            },
 
             initializeChild: function (options) {
                 options = options || {};
@@ -45,7 +35,7 @@
             },
 
             render: function () {
-                this.svg = d3.select(this.el)
+                this.svg = d3.select(this.querySelector('#chart'))
                     .append("svg")
                     .attr("width", this.viewerWidth)
                     .attr("height", this.viewerHeight)
@@ -85,7 +75,7 @@
                         var info = g.append('text')
                             .attr("class", "hover")
                             .attr('transform', function (d) {
-                                return "rotate(" + (d.x - 90) + ")rotate(" + (-d.x + 90) + ")";
+                                return "rotate(" + (-d.x + 90) + ")";
                             })
                             .text(d.name);
                     })
@@ -157,7 +147,7 @@
                 //set appropriate translation (origin in middle of svg)
                 this.svg.selectAll(".link")
                     .data(links, function (d) {
-                        return d.source.name + d.target.name;
+                        return d.source.name + d.source.id + d.target.name + d.target.id;
                     })
                     .transition()
                     .duration(1500)

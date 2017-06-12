@@ -8,6 +8,7 @@
   <title>atom-user-goals-visualization demo</title>
 
   <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../bower_components/d3/d3.min.js"></script>
 
   <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
   <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
@@ -19,10 +20,26 @@
 </head>
 
 <body>
-  <div class="vertical-section-container">
-    <atom-user-goals-visualization product-name="theBeats" description="This poster is a model that represents the people involved in the DMC quotation process, their key goals, and the tasks we
+  <dom-module id="my-demo">
+    <template>
+      <atom-user-goals-visualization product-name="theBeats" description="This poster is a model that represents the people involved in the DMC quotation process, their key goals, and the tasks we
           feel they should be undertaking in an ideal system."></atom-user-goals-visualization>
-  </div>
+    </template>
+    <script>
+      Polymer({
+        is: 'my-demo',
+
+        attached: function () {
+          var that = this;
+          d3.json('flare.json', function (err, data) {
+            var chart = that.querySelector('atom-user-goals-visualization');
+            chart.set('goals', data);
+          });
+        }
+      });
+    </script>
+  </dom-module>
+  <my-demo></my-demo>
 </body>
 
 </html>
