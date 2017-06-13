@@ -23,10 +23,9 @@
         background-image: url('default-bg.jpg');
         position: relative;
         --mdb-radio-list-button: {}
-      }
-
-       :host .node {
-        cursor: pointer;
+        --mdb-radio-list-selected-button-font-color: gold;
+        --mdb-radio-list-selected-button-border-color: gold;
+        --mdb-radio-list-selected-button-label-color: gold;
       }
 
        :host .dashboard-strip {
@@ -76,39 +75,6 @@
        :host #tree-container {
         text-align: center;
       }
-
-       /*:host .node circle {
-        fill: #434343;
-        stroke: transparent;
-        stroke-width: 1.5px;
-      }
-
-       :host .node text {
-        font-size: 12px;
-        font-family: 'Electrolize', sans-serif;
-        fill: #00fcda;
-      }
-
-       :host .link {
-        fill: none;
-        stroke: gold;
-        stroke-width: 0.5px;
-      }*/
-
-       /*:host .templink {
-        fill: none;
-        stroke: red;
-        stroke-width: 3px;
-      }
-
-      .ghostCircle.show {
-        display: block;
-      }
-
-       :host .ghostCircle,
-       :host .activeDrag .ghostCircle {
-        display: none;
-      }*/
     </style>
     <div class="dashboard-strip">
       <div class="dashboard-strip--about">
@@ -132,10 +98,10 @@
       </div>
     </div>
     <div id="tree-container" style="height:638px;width:1349px;">
-      <template is="dom-if" if="{{_isDashboard(selectedVisualization)}}">
+      <template is="dom-if" if="{{_isDashboard(selectedVisualization)}}" restamp>
         <atom-user-goals-visualization-dashboard goals="{{goals}}"></atom-user-goals-visualization-dashboard>
       </template>
-      <template is="dom-if" if="{{!_isDashboard(selectedVisualization)}}">
+      <template is="dom-if" if="{{!_isDashboard(selectedVisualization)}}" restamp>
         <atom-user-goals-visualization-summary goals="{{goals}}"></atom-user-goals-visualization-summary>
       </template>
     </div>

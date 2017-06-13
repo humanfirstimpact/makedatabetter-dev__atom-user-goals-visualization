@@ -44,17 +44,17 @@
                     .append("g");
 
                 this.zoomListener.translate([this.viewerWidth / 2, this.viewerHeight / 2]);
-                this.data.x0 = this.viewerHeight / 2;
-                this.data.y0 = 0;
+                this.goals.x0 = this.viewerHeight / 2;
+                this.goals.y0 = 0;
 
-                this.root = d3.select('g');
-                this._update(this.data);
+                this.container = d3.select('g');
+                this._update(this.goals);
             },
 
             _update: function (source) {
                 var i = 0;
                 var that = this;
-                this.nodes = this.cluster.nodes(this.data);
+                this.nodes = this.cluster.nodes(this.goals);
                 this.links = this.cluster.links(this.nodes);
 
                 var node = this.svg.selectAll(".node").data(this.nodes, function (d) { return d.id || (d.id = ++i); }),
@@ -137,7 +137,7 @@
                         return [d.y, d.x / 180 * Math.PI];
                     });
 
-                var nodes = this.tree.nodes(this.data), //recalculate layout
+                var nodes = this.tree.nodes(this.goals), //recalculate layout
                     links = this.tree.links(this.nodes);
 
                 this.svg.transition()

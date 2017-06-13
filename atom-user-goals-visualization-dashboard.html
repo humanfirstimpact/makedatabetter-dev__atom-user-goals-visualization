@@ -27,13 +27,14 @@
                     .attr('width', this.viewerWidth)
                     .attr('height', this.viewerHeight)
                     .attr('class', 'overlay')
-                    .call(this.zoomListener);
+                    .call(this.zoomListener)
+                    .append("g");
 
-                this.data.x0 = this.viewerHeight / 2;
-                this.data.y0 = 0;
+                this.goals.x0 = this.viewerHeight / 2;
+                this.goals.y0 = 0;
 
-                this.root = this.svg.append("g");
-                this._update(this.data);
+                this.container = d3.select("g");
+                this._update(this.goals);
             },
 
             _update: function (source) {
@@ -43,14 +44,14 @@
 
                 this.tree.size([dimensions.treeHeight, this.viewerWidth]);
 
-                var nodes = this.tree.nodes(this.data).reverse(),
+                var nodes = this.tree.nodes(this.goals).reverse(),
                     links = this.tree.links(nodes)
 
                 nodes.forEach(function (d) {
                     d.y = (d.depth * (dimensions.labelLength * 20));
                 });
 
-                var node = this.root
+                var node = this.container
                     .selectAll("g.node")
                     .data(nodes, function (d) {
                         return d.id || (d.id = ++i);
@@ -60,7 +61,7 @@
                     .append("g")
                     .attr("class", "node")
                     .attr("transform", function (d) {
-                        return "translate(" + that.data.y0 + "," + that.data.x0 + ")";
+                        return "translate(" + that.goals.y0 + "," + that.goals.x0 + ")";
                     })
                     .on('click', function () {
                         that._click.apply(that, arguments);
@@ -161,7 +162,7 @@
                     .style("fill-opacity", 0);
 
                 // Update the links…
-                var link = this.root.selectAll("path.link")
+                var link = this.container.selectAll("path.link")
                     .data(links, function (d) {
                         return d.target.id;
                     });
@@ -223,7 +224,7 @@
                             _recurse(l + 1, d);
                         });
                     }
-                })(0, this.data);
+                })(0, this.goals);
                 return {
                     treeHeight: d3.max(arr) * 30,
                     labelLength: labelLength

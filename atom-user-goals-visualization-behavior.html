@@ -43,11 +43,14 @@
 
         initializeChild: function (options) { },
 
+        attached: function () {
+            if (this.goals) this._goalsChanged();
+        },
+
         _goalsChanged: function () {
             //Render only if data has been loaded
             if (this.goals.hasOwnProperty('name')) {
                 this.initialize();
-                this.data = this.goals;
                 this.render();
             }
         },
@@ -70,7 +73,7 @@
         },
 
         _zoom: function () {
-            this.root.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
+            this.container.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
         },
 
         _fill: function (node) {
