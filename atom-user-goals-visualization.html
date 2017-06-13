@@ -2,7 +2,7 @@
 <link rel="import" href="../mdb-radio-list/mdb-radio-list.html">
 <link rel="import" href="../paper-radio-button/paper-radio-button.html">
 <link rel="import" href="atom-user-goals-visualization-summary.html">
-<link rel="import" href="atom-user-goals-visualization-dashboard.html">
+<link rel="import" href="atom-user-goals-visualization-details.html">
 
 <!--
 `atom-user-goals-visualization`
@@ -75,6 +75,10 @@
        :host #tree-container {
         text-align: center;
       }
+
+       :host paper-radio-button {
+        width: 100px;
+      }
     </style>
     <div class="dashboard-strip">
       <div class="dashboard-strip--about">
@@ -93,15 +97,15 @@
       <div class="dashboard-strip--option">
         <mdb-radio-list selected="{{selectedVisualization}}">
           <paper-radio-button name="summary">Summary</paper-radio-button>
-          <paper-radio-button name="dashboard">Dashboard</paper-radio-button>
+          <paper-radio-button name="details">Details</paper-radio-button>
         </mdb-radio-list>
       </div>
     </div>
     <div id="tree-container" style="height:638px;width:1349px;">
-      <template is="dom-if" if="{{_isDashboard(selectedVisualization)}}" restamp>
-        <atom-user-goals-visualization-dashboard goals="{{goals}}"></atom-user-goals-visualization-dashboard>
+      <template is="dom-if" if="{{_isDetails(selectedVisualization)}}" restamp>
+        <atom-user-goals-visualization-details goals="{{goals}}"></atom-user-goals-visualization-details>
       </template>
-      <template is="dom-if" if="{{!_isDashboard(selectedVisualization)}}" restamp>
+      <template is="dom-if" if="{{!_isDetails(selectedVisualization)}}" restamp>
         <atom-user-goals-visualization-summary goals="{{goals}}"></atom-user-goals-visualization-summary>
       </template>
     </div>
@@ -158,8 +162,8 @@
         }
       },
 
-      _isDashboard: function () {
-        return this.selectedVisualization === 'dashboard';
+      _isDetails: function () {
+        return this.selectedVisualization === 'details';
       }
 
     });

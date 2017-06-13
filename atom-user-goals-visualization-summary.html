@@ -40,14 +40,13 @@
                     .attr("width", this.viewerWidth)
                     .attr("height", this.viewerHeight)
                     .attr("class", "overlay")
-                    .call(this.zoomListener)
-                    .append("g");
+                    .call(this.zoomListener);
 
                 this.zoomListener.translate([this.viewerWidth / 2, this.viewerHeight / 2]);
                 this.goals.x0 = this.viewerHeight / 2;
                 this.goals.y0 = 0;
 
-                this.container = d3.select('g');
+                this.container = this.svg.append("g");
                 this._update(this.goals);
             },
 
@@ -57,8 +56,8 @@
                 this.nodes = this.cluster.nodes(this.goals);
                 this.links = this.cluster.links(this.nodes);
 
-                var node = this.svg.selectAll(".node").data(this.nodes, function (d) { return d.id || (d.id = ++i); }),
-                    link = this.svg.selectAll(".link").data(this.links, function (d) { return d.target.id; });
+                var node = this.container.selectAll(".node").data(this.nodes, function (d) { return d.id || (d.id = ++i); }),
+                    link = this.container.selectAll(".link").data(this.links, function (d) { return d.target.id; });
 
                 node.enter()
                     .append("g")
@@ -140,12 +139,12 @@
                 var nodes = this.tree.nodes(this.goals), //recalculate layout
                     links = this.tree.links(this.nodes);
 
-                this.svg.transition()
+                this.container.transition()
                     .duration(1500)
                     .attr("transform", "translate(" + (this.viewerWidth / 2) + "," + (this.viewerHeight / 2) + ")");
 
                 //set appropriate translation (origin in middle of svg)
-                this.svg.selectAll(".link")
+                this.container.selectAll(".link")
                     .data(links, function (d) {
                         return d.source.name + d.source.id + d.target.name + d.target.id;
                     })
@@ -153,7 +152,7 @@
                     .duration(1500)
                     .attr("d", radialDiagonal); //get the new radial path
 
-                this.svg.selectAll(".node")
+                this.container.selectAll(".node")
                     .data(this.nodes, function (d) {
                         return d.id;
                     }).transition()

@@ -13,7 +13,7 @@
         },
 
         attached: function () {
-            this.initialize();
+            if (this.goals) this._goalsChanged();
         },
 
         initialize: function (options) {
@@ -43,20 +43,15 @@
 
         initializeChild: function (options) { },
 
-        attached: function () {
-            if (this.goals) this._goalsChanged();
-        },
-
-        _goalsChanged: function () {
+        _goalsChanged: function (value) {
             //Render only if data has been loaded
-            if (this.goals.hasOwnProperty('name')) {
+            if (value && value.hasOwnProperty('name')) {
                 this.initialize();
                 this.render();
             }
         },
 
-        _click: function (d) {
-            if (d3.event.defaultPrevented) return; // click suppressed
+        _click: function (d) {            
             this._toggleChildren(d);
             this._update(d);
         },

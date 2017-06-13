@@ -3,7 +3,7 @@
 <link rel="import" href="atom-user-goals-visualization-styles.html">
 <script src="../d3/d3.min.js"></script>
 
-<dom-module id="atom-user-goals-visualization-dashboard">
+<dom-module id="atom-user-goals-visualization-details">
     <template>
         <style include="atom-user-goals-visualization-styles"></style>
         <style>
@@ -17,7 +17,7 @@
     <script>
         Polymer({
 
-            is: 'atom-user-goals-visualization-dashboard',
+            is: 'atom-user-goals-visualization-details',
 
             behaviors: [atom.UserGoalsVisualizationBehavior],
 
@@ -27,13 +27,12 @@
                     .attr('width', this.viewerWidth)
                     .attr('height', this.viewerHeight)
                     .attr('class', 'overlay')
-                    .call(this.zoomListener)
-                    .append("g");
+                    .call(this.zoomListener);
 
                 this.goals.x0 = this.viewerHeight / 2;
-                this.goals.y0 = 0;
+                this.goals.y0 = this.viewerWidth / 2;
 
-                this.container = d3.select("g");
+                this.container = this.svg.append("g");
                 this._update(this.goals);
             },
 
@@ -61,7 +60,7 @@
                     .append("g")
                     .attr("class", "node")
                     .attr("transform", function (d) {
-                        return "translate(" + that.goals.y0 + "," + that.goals.x0 + ")";
+                        return "translate(" + source.y0 + "," + source.x0 + ")";
                     })
                     .on('click', function () {
                         that._click.apply(that, arguments);
@@ -103,13 +102,6 @@
                         else
                             return "12px";
                     });
-
-                // phantom node to give us mouseover in a radius around it
-                enter.append("circle")
-                    .attr('class', 'ghostCircle')
-                    .attr("r", 30)
-                    .attr("opacity", 0.2) // change this to zero to hide the target area
-                    .style("fill", "red");
 
                 // Update the text to reflect whether node has children or not.
                 node.select('text')
@@ -238,7 +230,7 @@
                     x = x * scale + this.viewerWidth / 2,
                     y = y * scale + this.viewerHeight / 2;
 
-                d3.select('g')
+                this.container
                     .transition()
                     .duration(this.duration)
                     .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
