@@ -1,3 +1,4 @@
+<link href="https://fonts.googleapis.com/css?family=Electrolize" rel="stylesheet">
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../mdb-radio-list/mdb-radio-list.html">
 <link rel="import" href="../atom-google-sheet-adapter/atom-google-sheet-adapter.html">
@@ -79,6 +80,8 @@
 
        :host paper-radio-button {
         width: 100px;
+        font-family: 'Electrolize', sans-serif;
+        font-size: 16px;
       }
     </style>
     <div class="dashboard-strip">
@@ -202,7 +205,7 @@
         for (var i = 0; i < rows.length; i++) {
           var row = rows[i],
             user = children.find(function (e) { return e.name === row.user; }) || children.push({ name: row.user, children: [] }) && children[children.length - 1];
-            
+
           var goal;
           if (row.goal) {
             goal = user.children.find(function (e) { return e.name === row.goal });
