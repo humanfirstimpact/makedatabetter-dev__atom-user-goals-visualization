@@ -7,8 +7,11 @@
     <template>
         <style include="atom-user-goals-visualization-styles"></style>
         <style>
-             :host {
+            :host {
                 display: block;
+            }
+            :host .overlay{
+                padding-top: 195px
             }
         </style>
         <div id="chart"></div>
@@ -25,18 +28,16 @@
                 this.svg = d3.select(this.querySelector('#chart'))
                     .append("svg")
                     .attr('width', this.viewerWidth)
-                    .attr('height', this.viewerHeight)
+                    .attr('height', this.viewerHeight - 195)
                     .attr('class', 'overlay')
                     .call(this.zoomListener);
 
                 this.goals.x0 = this.viewerHeight / 2;
                 this.goals.y0 = this.viewerWidth / 2;
-
                 this.container = this.svg.append("g");
-                this._update(this.goals);
+                this._update(this.goals, true);
             },
-
-            _update: function (source) {
+            _update: function (source, isInit) {
                 var i = 0;
                 var that = this;
                 var dimensions = this._getDimensions();
@@ -200,7 +201,7 @@
                     d.y0 = d.y;
                 });
 
-                this._center(source);
+                this._center(source, isInit);
             },
 
             _getDimensions: function () {
@@ -223,12 +224,12 @@
                 };
             },
 
-            _center: function (node) {
-                var scale = this.zoomListener.scale(),
+            _center: function (node, isInit) {
+                var scale = (isInit ? 0.70 : this.zoomListener.scale()),
                     x = -node.y0,
                     y = -node.x0,
-                    x = x * scale + this.viewerWidth / 2,
-                    y = y * scale + this.viewerHeight / 2;
+                    x = isInit ? 470 : (x * scale + this.viewerWidth / 2),
+                    y = (y * scale + (isInit ? (this.viewerHeight - 195) : this.viewerHeight) / 2);
 
                 this.container
                     .transition()

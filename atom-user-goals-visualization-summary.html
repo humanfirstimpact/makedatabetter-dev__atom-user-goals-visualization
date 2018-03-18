@@ -47,10 +47,10 @@
                 this.goals.y0 = 0;
 
                 this.container = this.svg.append("g");
-                this._update(this.goals);
+                this._update(this.goals, true);
             },
 
-            _update: function (source) {
+            _update: function (source, isInit) {
                 var i = 0;
                 var that = this;
                 this.nodes = this.cluster.nodes(this.goals);
@@ -126,10 +126,10 @@
                 link.exit()
                     .remove();
 
-                this._transitionToRadial();
+                this._transitionToRadial(isInit);
             },
 
-            _transitionToRadial: function () {
+            _transitionToRadial: function (isInit) {
                 var i = 0;
                 var radialDiagonal = d3.svg.diagonal.radial()
                     .projection(function (d) {
@@ -141,7 +141,7 @@
 
                 this.container.transition()
                     .duration(1500)
-                    .attr("transform", "translate(" + (this.viewerWidth / 2) + "," + (this.viewerHeight / 2) + ")");
+                    .attr("transform", "translate(" + ((this.viewerWidth - 300) / 2) + "," + ((this.viewerHeight + (isInit ? 195 : 0)) / 2) + ")");
 
                 //set appropriate translation (origin in middle of svg)
                 this.container.selectAll(".link")
